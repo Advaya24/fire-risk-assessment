@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import {
-  Container, Typography, Paper, Box, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, CssBaseline, Fab, Zoom, ThemeProvider, createTheme, useTheme, TextField
+  Container, Typography, Paper, Box, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, CssBaseline, Fab, Zoom, ThemeProvider, createTheme, useTheme, TextField, IconButton
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -540,23 +540,46 @@ export default function App() {
   });
 
   // Theme toggle button for menu (not header)
-  const ColorModeToggle = (
-    <Button
-      onClick={() => {
-        setMode(m => {
-          const next = m === 'light' ? 'dark' : 'light';
-          localStorage.setItem('colorMode', next);
-          return next;
-        });
-      }}
-      color="inherit"
-      sx={{ minWidth: 0, p: 1, borderRadius: 2, width: '100%', justifyContent: 'flex-start' }}
-      aria-label="Toggle light/dark mode"
-      startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-    >
-      {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
-    </Button>
-  );
+  function ColorModeToggle({ showText = true }) {
+    if (showText) {
+      // Mobile: Button with icon and text
+      return (
+        <Button
+          onClick={() => {
+            setMode(m => {
+              const next = m === 'light' ? 'dark' : 'light';
+              localStorage.setItem('colorMode', next);
+              return next;
+            });
+          }}
+          color="inherit"
+          sx={{ minWidth: 0, p: 1, borderRadius: 2, width: '100%', justifyContent: 'flex-start' }}
+          aria-label="Toggle light/dark mode"
+          startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        >
+          {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        </Button>
+      );
+    } else {
+      // Desktop: IconButton only
+      return (
+        <IconButton
+          onClick={() => {
+            setMode(m => {
+              const next = m === 'light' ? 'dark' : 'light';
+              localStorage.setItem('colorMode', next);
+              return next;
+            });
+          }}
+          color="inherit"
+          sx={{ p: 1, borderRadius: 2 }}
+          aria-label="Toggle light/dark mode"
+        >
+          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+      );
+    }
+  }
 
   // Show Back to Top button after scrolling 300px
   useEffect(() => {

@@ -58,7 +58,7 @@ export default function Header({ ColorModeToggle, children }) {
               ))}
               {/* Theme toggle in menu (mobile only) */}
               <ListItem disablePadding>
-                {ColorModeToggle}
+                <ColorModeToggle showText={true} />
               </ListItem>
             </List>
           </Drawer>
@@ -125,7 +125,7 @@ export default function Header({ ColorModeToggle, children }) {
         </Box>
         {/* Desktop: Theme toggle on far right */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', ml: 2 }}>
-          {ColorModeToggle}
+          <ColorModeToggle showText={false} />
         </Box>
         {/* Right content (e.g., theme toggle) */}
         {children}

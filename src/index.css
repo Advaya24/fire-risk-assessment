@@ -26,6 +26,11 @@ h6, .MuiTypography-h6 {
   font-weight: 700 !important;
   letter-spacing: 0.5px;
 }
+/* Override nav button font weight in header */
+header .MuiButton-root {
+  font-weight: 500 !important;
+  font-size: 0.97rem !important;
+}
 
 hr, .MuiDivider-root {
   border: none;
