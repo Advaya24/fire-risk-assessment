@@ -302,7 +302,7 @@ function MainFormPage() {
   // Main content (hero, form, result, etc.)
   return (
     <Box sx={{ minHeight: '100vh', pb: 6, overflowX: 'hidden' }}>
-      <Container maxWidth="md" sx={{ py: { xs: 2, md: 6 }, px: { xs: 0.5, md: 2 } }}>
+      <Container maxWidth="md" sx={{ py: { xs: 2, md: 6 }, px: { xs: 2, sm: 3, md: 6 } }}>
         {/* Hero/Intro Section with SVG Wave */}
         <HeroSection />
         {/* Main Content Section with soft background */}
@@ -312,7 +312,7 @@ function MainFormPage() {
             : 'linear-gradient(135deg, #e3f2fd 60%, #f4f6fb 100%)',
           borderRadius: { xs: 2, md: 6 },
           boxShadow: '0 1.5px 6px 0 rgba(33, 150, 243, 0.04)',
-          px: { xs: 0.5, sm: 2, md: 6 },
+          px: { xs: 2, sm: 3, md: 6 },
           py: { xs: 2, sm: 3, md: 6 },
           mt: { xs: 2, md: 6 },
           mb: { xs: 2, md: 6 },
@@ -339,7 +339,7 @@ function MainFormPage() {
           <Paper
             elevation={6}
             sx={{
-              p: { xs: 1, sm: 2, md: 4 },
+              p: { xs: 2.5, sm: 3, md: 4 },
               mb: 4,
               borderRadius: { xs: 2, md: 4 },
               boxShadow: '0 1.5px 6px 0 rgba(33, 150, 243, 0.04)',
@@ -457,7 +457,7 @@ function MainFormPage() {
           {submitted && profile && (
             <Paper
               sx={{
-                p: { xs: 1, sm: 2, md: 4 },
+                p: { xs: 2.5, sm: 3, md: 4 },
                 mt: 4,
                 borderRadius: { xs: 2, md: 4 },
                 background: theme.palette.mode === 'dark'
@@ -491,15 +491,30 @@ function MainFormPage() {
 }
 
 export default function App() {
-  const [answers, setAnswers] = useState(Array(questions.length).fill(''));
-  const [submitted, setSubmitted] = useState(false);
+  const getSystemMode = () => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'light';
+  };
+  const [mode, setMode] = useState(() => localStorage.getItem('colorMode') || getSystemMode());
   const [showScroll, setShowScroll] = useState(false);
-  const [mode, setMode] = useState(() => localStorage.getItem('colorMode') || 'light');
 
-  // Persist color mode
+  // Persist color mode and listen for system changes if not overridden
   useEffect(() => {
     localStorage.setItem('colorMode', mode);
   }, [mode]);
+
+  useEffect(() => {
+    const listener = (e) => {
+      if (!localStorage.getItem('colorMode')) {
+        setMode(e.matches ? 'dark' : 'light');
+      }
+    };
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', listener);
+    return () => mq.removeEventListener('change', listener);
+  }, []);
 
   const theme = createTheme({
     palette: {
@@ -524,15 +539,22 @@ export default function App() {
     },
   });
 
-  // Theme toggle button for header
+  // Theme toggle button for menu (not header)
   const ColorModeToggle = (
     <Button
-      onClick={() => setMode(m => (m === 'light' ? 'dark' : 'light'))}
+      onClick={() => {
+        setMode(m => {
+          const next = m === 'light' ? 'dark' : 'light';
+          localStorage.setItem('colorMode', next);
+          return next;
+        });
+      }}
       color="inherit"
-      sx={{ ml: 2, minWidth: 0, p: 1, borderRadius: 2 }}
+      sx={{ minWidth: 0, p: 1, borderRadius: 2, width: '100%', justifyContent: 'flex-start' }}
       aria-label="Toggle light/dark mode"
+      startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
     >
-      {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
     </Button>
   );
 
@@ -547,28 +569,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleChange = (idx, value) => {
-    setAnswers(a => {
-      const copy = [...a];
-      copy[idx] = value;
-      return copy;
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
-  const totalScore = answers.reduce((sum, val) => sum + (parseInt(val) || 0), 0);
-  const avgScore = answers.filter(Boolean).length ? totalScore / answers.filter(Boolean).length : 0;
-  const profile = getRiskProfile(avgScore);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Header rightContent={ColorModeToggle} />
+        <Header ColorModeToggle={ColorModeToggle} />
         <Routes>
           <Route path="/" element={<MainFormPage />} />
           <Route path="/about" element={<About />} />
