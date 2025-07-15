@@ -14,109 +14,109 @@ import Contact from './Contact';
 
 const questions = [
   {
-    label: 'No of Dependants',
+    label: 'Number of Dependents',
     options: [
-      { label: '>3', value: 1 },
+      { label: 'More than 3', value: 1 },
       { label: '3', value: 2 },
       { label: '2', value: 3 },
       { label: '1', value: 4 },
-      { label: '0', value: 5 },
+      { label: 'None', value: 5 },
     ],
   },
   {
-    label: '% EMI of monthly Income',
+    label: 'EMI as Percentage of Monthly Income',
     options: [
-      { label: '>50%', value: 1 },
-      { label: '25%-50%', value: 2 },
+      { label: 'More than 50%', value: 1 },
+      { label: '25% to 50%', value: 2 },
       { label: '10% to 25%', value: 3 },
-      { label: '<10%', value: 4 },
-      { label: '0', value: 5 },
+      { label: 'Less than 10%', value: 4 },
+      { label: 'None', value: 5 },
     ],
   },
   {
-    label: 'Knowledge of Investment Products (Mutual funds, equity, bonds)',
+    label: 'Knowledge of Investment Products',
     options: [
-      { label: 'Unaware - Do not understand at all', value: 1 },
-      { label: 'Aware of basic concepts', value: 2 },
-      { label: 'Beginner: Aware by relying on advice', value: 3 },
-      { label: 'Proficient: Do investments in various products myself', value: 4 },
-      { label: 'Expert: Extensively trade in shares in secondary market', value: 5 },
+      { label: 'Unaware – Do Not Understand at All', value: 1 },
+      { label: 'Aware of Basic Concepts', value: 2 },
+      { label: 'Beginner – Rely on Advice', value: 3 },
+      { label: 'Proficient – Invest Independently', value: 4 },
+      { label: 'Expert – Actively Trade in Markets', value: 5 },
     ],
   },
   {
-    label: 'Equity as a %age of my total investments',
+    label: 'Equity as Percentage of Total Investments',
     options: [
-      { label: 'Nil', value: 1 },
-      { label: '<20%', value: 2 },
-      { label: '20%-40%', value: 3 },
+      { label: 'None', value: 1 },
+      { label: 'Less than 20%', value: 2 },
+      { label: '20% to 40%', value: 3 },
       { label: 'Approximately 50%', value: 4 },
-      { label: '>50%', value: 5 },
+      { label: 'More than 50%', value: 5 },
     ],
   },
   {
-    label: 'If I have an option of a stable Job/profession with low growth opp. vs. start up with high growth Opportunity',
+    label: 'Job Preference: Stability vs. Growth Opportunity',
     options: [
-      { label: 'Definitely Stable', value: 1 },
-      { label: 'Somewhat stable', value: 2 },
-      { label: 'Not sure', value: 3 },
-      { label: 'Somewhat start up', value: 4 },
-      { label: 'Definitely start up', value: 5 },
+      { label: 'Definitely Prefer Stability', value: 1 },
+      { label: 'Somewhat Prefer Stability', value: 2 },
+      { label: 'No Strong Preference', value: 3 },
+      { label: 'Somewhat Prefer Growth', value: 4 },
+      { label: 'Definitely Prefer Growth', value: 5 },
     ],
   },
   {
-    label: 'In case of a correction in stock market>20% drop in my portfolio, I will',
+    label: 'If your portfolio dropped by more than 20% due to a market correction, what would you do?',
     options: [
-      { label: 'Sell all immediately', value: 1 },
-      { label: 'Switch immediately to lower risk portfolio', value: 2 },
-      { label: 'Watch and switch over time to lower risk portfolio', value: 3 },
-      { label: 'Stay put', value: 4 },
-      { label: 'Invest more', value: 5 },
+      { label: 'Sell All Investments Immediately', value: 1 },
+      { label: 'Switch to Lower Risk Portfolio', value: 2 },
+      { label: 'Gradually Shift to Lower Risk', value: 3 },
+      { label: 'Stay Invested', value: 4 },
+      { label: 'Invest More', value: 5 },
     ],
   },
   {
     label: 'Annual Income',
     options: [
-      { label: 'Less than 5 lacs', value: 1 },
-      { label: '5 to 25 lacs', value: 2 },
-      { label: '25 to 50 lacs', value: 3 },
-      { label: '50 lacs to 1 Cr', value: 4 },
-      { label: '>1 Cr', value: 5 },
+      { label: 'Less than ₹5 lakh', value: 1 },
+      { label: '₹5–25 lakh', value: 2 },
+      { label: '₹25–50 lakh', value: 3 },
+      { label: '₹50 lakh–1 crore', value: 4 },
+      { label: 'More than ₹1 crore', value: 5 },
     ],
   },
   {
-    label: 'How secure do you feel about your current & future income sources',
+    label: 'Security of Current and Future Income',
     options: [
       { label: 'Not Secure', value: 1 },
-      { label: 'Somewhat insecure', value: 2 },
-      { label: 'Not sure', value: 3 },
-      { label: 'Somewhat secure', value: 4 },
+      { label: 'Somewhat Insecure', value: 2 },
+      { label: 'Uncertain', value: 3 },
+      { label: 'Somewhat Secure', value: 4 },
       { label: 'Very Secure', value: 5 },
     ],
   },
   {
-    label: 'Your mindset as an investor',
+    label: 'Investment Mindset',
     options: [
-      { label: 'Not ok with any loss even if temporary', value: 1 },
-      { label: 'I\'m ok with a loss of 8% if there are possible gains of >20%', value: 3 },
-      { label: 'Ok with a loss of 25% if there are possible gains of >50%', value: 5 },
+      { label: 'Not Comfortable with Any Loss', value: 1 },
+      { label: 'Comfortable with 8% Loss for 20% Gain', value: 3 },
+      { label: 'Comfortable with 25% Loss for 50% Gain', value: 5 },
     ],
   },
   {
-    label: 'Age group',
+    label: 'Age Group',
     options: [
-      { label: '>65 years', value: 1 },
-      { label: '50 to 65 years', value: 2 },
+      { label: 'Over 65 Years', value: 1 },
+      { label: '50 to 65 Years', value: 2 },
       { label: '26 to 50 Years', value: 3 },
-      { label: '25 to 30 years', value: 4 },
-      { label: '<25 years', value: 5 },
+      { label: '25 to 30 Years', value: 4 },
+      { label: 'Under 25 Years', value: 5 },
     ],
   },
   {
-    label: 'Portfolio size as % of annual income',
+    label: 'Portfolio Size as Percentage of Annual Income',
     options: [
-      { label: '>60%', value: 1 },
-      { label: '30 - 50%', value: 2 },
-      { label: '<30%', value: 3 },
+      { label: 'Over 60%', value: 1 },
+      { label: '30% to 50%', value: 2 },
+      { label: 'Less than 30%', value: 3 },
     ],
   },
 ];
@@ -391,7 +391,7 @@ function MainFormPage() {
                     <RadioGroup
                       value={answers[i]}
                       onChange={e => handleChange(i, e.target.value)}
-                      row={window.innerWidth >= 600}
+                      row={false}
                     >
                       {q.options.map(opt => (
                         <FormControlLabel
@@ -441,7 +441,7 @@ function MainFormPage() {
                     overflow: 'hidden',
                   }}
                 >
-                  Submit
+                  Submit Assessment
                 </Button>
               </Box>
             </form>
