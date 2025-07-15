@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import {
-  Container, Typography, Paper, Box, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, CssBaseline, Fab, Zoom, ThemeProvider, createTheme, useTheme
+  Container, Typography, Paper, Box, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, CssBaseline, Fab, Zoom, ThemeProvider, createTheme, useTheme, TextField
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -226,6 +226,9 @@ function MainFormPage() {
   // State and handlers for the form/result
   const [answers, setAnswers] = useState(Array(questions.length).fill(''));
   const [submitted, setSubmitted] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: '', email: '', phone: '' });
+  const [userErrors, setUserErrors] = useState({ name: '', email: '' });
+  const [downloadAnchor, setDownloadAnchor] = useState(null);
 
   const handleChange = (idx, value) => {
     setAnswers(a => {
@@ -235,9 +238,60 @@ function MainFormPage() {
     });
   };
 
+  const handleUserInfoChange = (field, value) => {
+    setUserInfo(info => ({ ...info, [field]: value }));
+    setUserErrors(errors => ({ ...errors, [field]: '' }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validate user info
+    let errors = {};
+    if (!userInfo.name.trim()) errors.name = 'Name is required';
+    if (!userInfo.email.trim()) errors.email = 'Email is required';
+    setUserErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+    // Prepare submission data
+    const submission = {
+      timestamp: new Date().toISOString(),
+      ...userInfo,
+      answers,
+      score: avgScore,
+      profile: profile?.label || '',
+    };
+    // Save to LocalStorage
+    const prev = JSON.parse(localStorage.getItem('fire_submissions') || '[]');
+    localStorage.setItem('fire_submissions', JSON.stringify([...prev, submission]));
     setSubmitted(true);
+  };
+
+  // Download all submissions as CSV
+  const handleDownloadCSV = () => {
+    const data = JSON.parse(localStorage.getItem('fire_submissions') || '[]');
+    if (!data.length) return;
+    // Flatten answers into Q1, Q2, ...
+    const headers = [
+      'Timestamp', 'Name', 'Email', 'Phone',
+      ...questions.map((q, i) => `Q${i + 1}`),
+      'Score', 'Profile'
+    ];
+    const rows = data.map(d => [
+      d.timestamp,
+      d.name,
+      d.email,
+      d.phone,
+      ...(d.answers || []),
+      d.score,
+      d.profile
+    ]);
+    const csv = [headers, ...rows].map(r => r.map(x => `"${(x ?? '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fire_submissions.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const totalScore = answers.reduce((sum, val) => sum + (parseInt(val) || 0), 0);
@@ -301,6 +355,34 @@ function MainFormPage() {
             </Typography>
             <Divider sx={{ mb: 3 }} />
             <form onSubmit={handleSubmit}>
+              {/* User identification fields */}
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 3 }}>
+                <TextField
+                  label="Name"
+                  value={userInfo.name}
+                  onChange={e => handleUserInfoChange('name', e.target.value)}
+                  required
+                  error={!!userErrors.name}
+                  helperText={userErrors.name}
+                  fullWidth
+                />
+                <TextField
+                  label="Email"
+                  value={userInfo.email}
+                  onChange={e => handleUserInfoChange('email', e.target.value)}
+                  required
+                  error={!!userErrors.email}
+                  helperText={userErrors.email}
+                  type="email"
+                  fullWidth
+                />
+                <TextField
+                  label="Phone (optional)"
+                  value={userInfo.phone}
+                  onChange={e => handleUserInfoChange('phone', e.target.value)}
+                  fullWidth
+                />
+              </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, md: 4 } }}>
                 {questions.map((q, i) => (
                   <FormControl key={q.label} component="fieldset" sx={{ mb: 2 }}>
@@ -362,6 +444,13 @@ function MainFormPage() {
                 </Button>
               </Box>
             </form>
+            {submitted && (
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Button variant="outlined" color="primary" onClick={handleDownloadCSV}>
+                  Download All Submissions (CSV)
+                </Button>
+              </Box>
+            )}
           </Paper>
           {/* Result Section */}
           {submitted && profile && (
