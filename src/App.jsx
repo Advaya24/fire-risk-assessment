@@ -572,37 +572,41 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <Header ColorModeToggle={ColorModeToggle} />
-        <Routes>
-          <Route path="/" element={<MainFormPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-        <Footer />
-        {/* Back to Top Button */}
-        <Zoom in={showScroll}>
-          <Fab
-            color="primary"
-            size="medium"
-            aria-label="Back to top"
-            onClick={handleBackToTop}
-            sx={{
-              position: 'fixed',
-              bottom: { xs: 24, md: 40 },
-              right: { xs: 24, md: 40 },
-              zIndex: 1201,
-              boxShadow: '0 4px 16px 0 rgba(33,150,243,0.18)',
-              transition: 'box-shadow 0.2s',
-              '&:hover': {
-                boxShadow: '0 8px 32px 0 rgba(33,150,243,0.28)',
-              },
-            }}
-          >
-            <KeyboardArrowUpIcon fontSize="large" />
-          </Fab>
-        </Zoom>
-      </BrowserRouter>
+      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <BrowserRouter>
+          <Header ColorModeToggle={ColorModeToggle} />
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+            <Routes>
+              <Route path="/" element={<MainFormPage />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </Box>
+          <Footer />
+          {/* Back to Top Button */}
+          <Zoom in={showScroll}>
+            <Fab
+              color="primary"
+              size="medium"
+              aria-label="Back to top"
+              onClick={handleBackToTop}
+              sx={{
+                position: 'fixed',
+                bottom: { xs: 24, md: 40 },
+                right: { xs: 24, md: 40 },
+                zIndex: 1201,
+                boxShadow: '0 4px 16px 0 rgba(33,150,243,0.18)',
+                transition: 'box-shadow 0.2s',
+                '&:hover': {
+                  boxShadow: '0 8px 32px 0 rgba(33,150,243,0.28)',
+                },
+              }}
+            >
+              <KeyboardArrowUpIcon fontSize="large" />
+            </Fab>
+          </Zoom>
+        </BrowserRouter>
+      </Box>
     </ThemeProvider>
   );
 } 
