@@ -598,7 +598,7 @@ export default function App() {
       <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <BrowserRouter>
           <Header ColorModeToggle={ColorModeToggle} />
-          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: { xs: '84px', md: '84px' } }}>
             <Routes>
               <Route path="/" element={<MainFormPage />} />
               <Route path="/about" element={<About />} />

@@ -1,28 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, Button, useTheme, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function Header({ ColorModeToggle, children }) {
   const location = useLocation();
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navLinks = [
     { label: 'Home', to: '/' },
     { label: 'About', to: '/about' },
     { label: 'Contact', to: '/contact' },
   ];
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 900;
+
+  // Shadow/blur on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 8);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <AppBar
-      position="static"
+      position="fixed"
       color="default"
       elevation={0}
       sx={{
+        top: 0,
+        left: 0,
+        right: 0,
         background: theme.palette.background.paper,
         borderBottom: `1.5px solid ${theme.palette.divider}`,
-        boxShadow: theme.palette.mode === 'dark' ? '0 2px 8px 0 rgba(0,0,0,0.18)' : '0 2px 8px 0 rgba(33,150,243,0.04)',
+        boxShadow: scrolled
+          ? (theme.palette.mode === 'dark'
+              ? '0 4px 24px 0 rgba(33,150,243,0.10), 0 1.5px 6px 0 rgba(33,150,243,0.10)'
+              : '0 4px 24px 0 rgba(33,150,243,0.10), 0 1.5px 6px 0 rgba(33,150,243,0.04)')
+          : 'none',
+        backdropFilter: scrolled ? 'blur(8px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(8px)' : 'none',
+        zIndex: 1202,
+        transition: 'box-shadow 0.35s cubic-bezier(.4,0,.2,1), backdrop-filter 0.35s cubic-bezier(.4,0,.2,1)',
       }}
     >
       <Toolbar sx={{ minHeight: 84, px: { xs: 1, md: 4 }, position: 'relative' }}>
