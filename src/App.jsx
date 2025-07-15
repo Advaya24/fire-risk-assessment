@@ -229,6 +229,7 @@ function MainFormPage() {
   const [userInfo, setUserInfo] = useState({ name: '', email: '', phone: '' });
   const [userErrors, setUserErrors] = useState({ name: '', email: '' });
   const [downloadAnchor, setDownloadAnchor] = useState(null);
+  const theme = useTheme();
 
   const handleChange = (idx, value) => {
     setAnswers(a => {
@@ -459,7 +460,9 @@ function MainFormPage() {
                 p: { xs: 1, sm: 2, md: 4 },
                 mt: 4,
                 borderRadius: { xs: 2, md: 4 },
-                background: 'linear-gradient(90deg, #e3f2fd 0%, #fff 100%)',
+                background: theme.palette.mode === 'dark'
+                  ? 'linear-gradient(90deg, rgba(33,150,243,0.10) 0%, rgba(33,203,243,0.10) 100%), ' + theme.palette.background.paper
+                  : 'linear-gradient(90deg, #e3f2fd 0%, #fff 100%)',
                 boxShadow: '0 1.5px 6px 0 rgba(33, 150, 243, 0.04)',
                 transition: 'box-shadow 0.3s cubic-bezier(.25,.8,.25,1)',
                 maxWidth: '100%',
