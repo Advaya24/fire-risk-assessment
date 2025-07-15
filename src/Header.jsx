@@ -53,7 +53,7 @@ export default function Header({ ColorModeToggle, children }) {
             color="inherit"
             edge="start"
             aria-label="menu"
-            onClick={() => setDrawerOpen(true)}
+            onClick={() => setDrawerOpen(open => !open)}
             sx={{ mr: 1 }}
           >
             <MenuIcon />
@@ -62,9 +62,9 @@ export default function Header({ ColorModeToggle, children }) {
             anchor="left"
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
-            PaperProps={{ sx: { minWidth: 200 } }}
+            PaperProps={{ sx: { minWidth: 200, zIndex: 1300 } }}
           >
-            <List>
+            <List sx={{ mt: '84px' }}>
               {navLinks.map(link => (
                 <ListItem key={link.to} disablePadding>
                   <ListItemButton
