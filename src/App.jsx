@@ -8,7 +8,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { keyframes } from '@emotion/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import About from './About';
 import Contact from './Contact';
 
@@ -596,7 +596,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <BrowserRouter>
+        <Router>
           <Header ColorModeToggle={ColorModeToggle} />
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: { xs: '84px', md: '84px' } }}>
             <Routes>
@@ -628,7 +628,7 @@ export default function App() {
               <KeyboardArrowUpIcon fontSize="large" />
             </Fab>
           </Zoom>
-        </BrowserRouter>
+        </Router>
       </Box>
     </ThemeProvider>
   );
