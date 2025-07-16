@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/fire-risk-assessment/',
   server: {
     host: '0.0.0.0',
   },
